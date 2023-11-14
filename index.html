@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Book Listing App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h1>Book Listing App</h1>
+      <h3>Powered by <a href="https://www.goodreads.com">Goodreads.com</a></h3>
+
+      <input
+        id="searchBar"
+        type="text"
+        placeholder="Search Books..."
+        v-model="searchQuery"
+      />
+      <button id="searchBtn" @click="fetchBooks()">Search</button>
+
+      <a :bind="page" @click="page - 1">Prev Page</a>
+      <a :bind="page" @click="page + 1">Next Page</a>
+
+
+      <div id="book-results-container" v-if="fetchedData && fetchedData.length">
+        <ul>
+          <li v-for="book in fetchedData" :key="book.id">
+            <img :src="book.imageUrl" :alt="book.title" />
+            <h2>{{ book.title }}</h2>
+            <p>Author: {{ book.author }}</p>
+          </li>
+        </ul>
+      </div>
+
+      <div v-if="!fetchedData || fetchedData.length === 0">No results found.</div>
+
+    </div>
+	  <script src="main.js"></script>
+    <script>
+      const mountedApp = app.mount('#app')
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter"){
+          document.getElementById("searchBtn").click();
+        }
+      });
+    </script>
+  </body>
+</html>
